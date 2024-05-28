@@ -44,3 +44,10 @@ class userLogin(BaseModel):
     print("noooo")
 
 
+class token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class tokendata(BaseModel):  #the data that we embed in our access token
+    user_id: int

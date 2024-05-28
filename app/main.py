@@ -8,6 +8,7 @@ from . import models,schemas,oauth
 from sqlalchemy.orm import Session
 from .database import SessionLocal, engine, get_db
 from .utils import hash_password,verify_password
+from fastapi.security.oauth2 import OAuth2PasswordRequestForm
 
 
 
@@ -67,8 +68,8 @@ def get_user(id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/login")
-def login(user_credentials:schemas.userLogin,db:Session=Depends(get_db)):
-    user=db.query(models.User).filter(models.User.email==user_credentials.email).first()
+def login(user_credentials:OAuth2PasswordRequestForm=Depends(),db:Session=Depends(get_db)):
+    user=db.query(models.User).filter(models.User.email==user_credentials.username).first()
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Invalid Credentials")
     
